@@ -1,0 +1,15 @@
+- build: examples/1-encrypted-server
+  photon: [0.6.3, 0.7.0, 1.0.0]
+  p1: [1.0.0]
+  electron: [1.0.0]
+  argon: [0.8.0-rc.27]
+  boron: [0.8.0-rc.27]
+  xenon: [0.8.0-rc.27]
+- build: examples/2-encrypted-client
+  boron: [0.8.0-rc.27]
+- build: examples/3-reliable-datagram-server
+  argon: [0.8.0-rc.27]
+- build: examples/4-reliable-datagram-client
+  xenon: [0.8.0-rc.27]
+- build: more-examples/10-reliable-datagram-client-display
+  xenon: [0.8.0-rc.27]
