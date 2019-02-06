@@ -6,6 +6,8 @@ This is a port of the [RadioHead Packet Radio Library](http://www.airspayce.com/
 
 ![Argon](images/server.jpg)
 
+Note that this only allows nearby RF9x LoRa radios to communicate with each other in point-to-point mode to send data packets. It does not allow the Xenon, for example, to establish a cloud connection over LoRa instead of Particle Mesh (Thread mesh, 6LoWPAN over 802.15.4).
+
 While I tested the Adafruit FeatherWing form-factor radios, it also works with the breakout versions.
 
 - [RFM95W](https://www.adafruit.com/product/3231) 868 or 915 MHz  Americas ITU 2 license-free ISM
