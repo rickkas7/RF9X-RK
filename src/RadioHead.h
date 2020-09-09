@@ -1171,6 +1171,7 @@ these examples and explanations and extend them to suit your needs.
     // 2nd-generation particle defines
     #define RH_PLATFORM RH_PLATFORM_STM32F2
   #endif
+  #define SPI_HAS_TRANSACTION
 #elif (MPIDE>=150 && defined(ARDUINO))
   // Using ChipKIT Core on Arduino IDE
   #define RH_PLATFORM RH_PLATFORM_CHIPKIT_CORE

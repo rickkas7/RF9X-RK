@@ -125,3 +125,8 @@ and you are not prepared to distribute and share the source code of your
 application. Contact info@open.com.au for details.
 
 
+## Version History
+
+### 0.0.3 (2020-09-09)
+
+- Modified the hardware SPI initialization to not set the default SS pin (typically A5) as an output and high, regardless of what was configured as the CS pin.

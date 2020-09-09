@@ -103,7 +103,7 @@ void RHHardwareSPI::begin()
 
     // Save the settings for use in transactions
    _settings = SPISettings(frequency, bitOrder, dataMode);
-   SPI.begin();
+   SPI.begin(PIN_INVALID);
     
 #else // SPI_HAS_TRANSACTION
     
