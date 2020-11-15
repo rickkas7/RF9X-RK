@@ -127,6 +127,10 @@ application. Contact info@open.com.au for details.
 
 ## Version History
 
+### 0.0.5 (2020-11-15)
+
+- Fixed compile error on Gen3 devices with 2.0.0-rc due to HAL_PLATFORM_MESH no longer being defined.
+
 ### 0.0.4 (2020-09-09)
 
 - Modified the hardware SPI initialization to not set the default SS pin (typically A5) as an output and high, regardless of what was configured as the CS pin.

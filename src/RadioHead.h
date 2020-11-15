@@ -1164,7 +1164,7 @@ these examples and explanations and extend them to suit your needs.
 #ifndef RH_PLATFORM
 #if defined(PARTICLE)
   #include "Particle.h"
-  #if HAL_PLATFORM_MESH
+  #if defined(HAL_PLATFORM_MESH) || defined(HAL_PLATFORM_NRF52840)
     // 3rd-generation Particle devices
     #define RH_PLATFORM RH_PLATFORM_NRF52
   #else
