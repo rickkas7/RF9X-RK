@@ -1908,7 +1908,7 @@ these examples and explanations and extend them to suit your needs.
 // Uncomment this is to enable Encryption (see RHEncryptedDriver):
 // But ensure you have installed the Crypto directory from arduinolibs first:
 // http://rweather.github.io/arduinolibs/index.html
-//#define RH_ENABLE_ENCRYPTION_MODULE
+#define RH_ENABLE_ENCRYPTION_MODULE
 
 // Some platforms like RocketScream need this to see debug Serial output from within RH
 // and if it goes to Serial, get a hang after a few minutes.
