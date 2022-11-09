@@ -377,14 +377,14 @@ uint8_t RH_RF95::maxMessageLength()
     return RH_RF95_MAX_MESSAGE_LEN;
 }
 
-bool RH_RF95::setFrequency(float centre)
+bool RH_RF95::setFrequency(uint32_t centre_x100)
 {
     // Frf = FRF / FSTEP
-    uint32_t frf = (centre * 1000000.0) / RH_RF95_FSTEP;
+    uint32_t frf = (centre_x100 * 10000.0) / RH_RF95_FSTEP;
     spiWrite(RH_RF95_REG_06_FRF_MSB, (frf >> 16) & 0xff);
     spiWrite(RH_RF95_REG_07_FRF_MID, (frf >> 8) & 0xff);
     spiWrite(RH_RF95_REG_08_FRF_LSB, frf & 0xff);
-    _usingHFport = (centre >= 779.0);
+    _usingHFport = (centre_x100/100 >= 779.0);
 
     return true;
 }

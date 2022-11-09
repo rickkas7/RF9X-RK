@@ -30,6 +30,10 @@ RHMesh::RHMesh(RHGenericDriver& driver, uint8_t thisAddress)
 // waits for delivery to the next hop (but not for delivery to the final destination)
 uint8_t RHMesh::sendtoWait(uint8_t* buf, uint8_t len, uint8_t address, uint8_t flags)
 {
+	//Keep track of the millis when this request was first made. Used to correct the TX time if we had to first perform a route discovery. 
+	//This is used to compensate the time recieved by the time it took the message to get to me. 
+	uint32_t Strt_millis = millis();
+
     if (len > RH_MESH_MAX_MESSAGE_LEN)
 	return RH_ROUTER_ERROR_INVALID_LENGTH;
 
@@ -40,10 +44,21 @@ uint8_t RHMesh::sendtoWait(uint8_t* buf, uint8_t len, uint8_t address, uint8_t f
 	    return RH_ROUTER_ERROR_NO_ROUTE;
     }
 
+	// The mesh route discovery delay is in hundredths and is current millis - the millis this function was first called. In units of hundredths of a second to fit into 1 byte. 
+	// The last byte of the application message is reserved for any transmit delay in hundredths of a second. This way the reciever knows to compensate for it. 
+	uint16_t meshRouteDiscovertDelay = (millis() - Strt_millis)/10;
+	if (buf[len-1] + meshRouteDiscovertDelay >= 255){
+		buf[len-1] = 255;
+	}
+	else{
+		buf[len-1] = buf[len-1] + meshRouteDiscovertDelay;
+	}
+
     // Now have a route. Contruct an application layer message and send it via that route
     MeshApplicationMessage* a = (MeshApplicationMessage*)&_tmpMessage;
     a->header.msgType = RH_MESH_MESSAGE_TYPE_APPLICATION;
     memcpy(a->data, buf, len);
+
     return RHRouter::sendtoWait(_tmpMessage, sizeof(RHMesh::MeshMessageHeader) + len, address, flags);
 }
 
