@@ -2,10 +2,11 @@
 //
 // Author: Philippe.Rochat'at'gmail.com
 // Contributed to the RadioHead project by the author
-// $Id: RHEncryptedDriver.cpp,v 1.4 2018/09/23 23:54:01 mikem Exp $
+// $Id: RHEncryptedDriver.cpp,v 1.7 2020/08/04 09:02:14 mikem Exp $
 
-#include <RHEncryptedDriver.h>
+#include <RadioHead.h>
 #ifdef RH_ENABLE_ENCRYPTION_MODULE
+#include <RHEncryptedDriver.h>
 
 RHEncryptedDriver::RHEncryptedDriver(RHGenericDriver& driver, BlockCipher& blockcipher)
     : _driver(driver),
@@ -69,7 +70,7 @@ bool RHEncryptedDriver::send(const uint8_t* data, uint8_t len)
     int max_message_length = maxMessageLength();
 #ifdef STRICT_CONTENT_LEN	
     uint8_t nbBlocks = len / blockSize + 1; // How many blocks do we need for that message
-    uint8_t nbBpM = max_message_length + 1 / blockSize; // Max number of blocks per message
+    uint8_t nbBpM = (max_message_length + 1) / blockSize; // Max number of blocks per message
 #else
     uint8_t nbBlocks = (len - 1) / blockSize + 1; // How many blocks do we need for that message
     uint8_t nbBpM = max_message_length / blockSize; // Max number of blocks per message

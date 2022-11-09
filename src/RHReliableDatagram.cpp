@@ -88,6 +88,25 @@ bool RHReliableDatagram::sendtoWait(uint8_t* buf, uint8_t len, uint8_t address)
 #else
 	uint16_t timeout = _timeout + (_timeout * random(0, 256) / 256);
 #endif
+
+	//Round the total timeout to the nearest hundredth of a ms. Decreasing resolution allows us to include the total timeout within the message packet but still maintain total accuracy of it upto 2,550 ms (255 *10).  
+	timeout = (timeout/10)*10;
+
+	// If we assume the message is initiated from RFM95 Mesh then buf[5] is the message type. If buf[5] = 0, this is an application message. Let's "hijack" the last two bytes of that message to add the number of re-transmissions 
+	// and the delay with each transmission. This can be used to determine the total transmit time end to end of a message by accounting for re-transmissions in route. 
+	// This is used to synronize time properly between LoRa nodes despite variable transmit time. 
+	// Since radio head also adds a random delay with each re-transmission, we must also account for that delay and track it seperatly. If the total retransmission delay >= 255, then just set it to 255. This can be used as a flag to 
+	// indicate the we exceeded 2.55 seconds of re-transmission and to not use this data to set the time. 
+	if (buf[5] == 0){
+		buf[len-2]++; // Increment the number of re-transmissions
+		if (buf[len-1] + timeout/10 >= 255){
+			buf[len-1] = 255; // Max value of a byte is 255. If greater than this value, then simply set it to 255. 
+		}
+		else{
+			buf[len-1] = buf[len-1] + timeout/10; // Accumulate the total timeout between all re-transmissions so we know end to end total timeout delay. Accuracy is hundreths of a second with a max timeout of 255. If greater than 255 (2.5 seconds) then just set it to 255 indicating max delay. 
+		}
+	}
+
 	int32_t timeLeft;
         while ((timeLeft = timeout - (millis() - thisSendTime)) > 0)
 	{
