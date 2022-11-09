@@ -702,10 +702,10 @@ public:
 
     /// Sets the transmitter and receiver 
     /// centre frequency.
-    /// \param[in] centre Frequency in MHz. 137.0 to 1020.0. Caution: RFM95/96/97/98 comes in several
+    /// \param[in] centre Frequency in MHz *100. 137.0 to 1020.0. Caution: RFM95/96/97/98 comes in several
     /// different frequency ranges, and setting a frequency outside that range of your radio will probably not work
     /// \return true if the selected frquency centre is within range
-    bool        setFrequency(float centre);
+    bool        setFrequency(uint32_t centre_x100);
 
     /// If current mode is Rx or Tx changes it to Idle. If the transmitter or receiver is running, 
     /// disables them.

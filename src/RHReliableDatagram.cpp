@@ -83,12 +83,14 @@ bool RHReliableDatagram::sendtoWait(uint8_t* buf, uint8_t len, uint8_t address)
 	// Compute a new timeout, random between _timeout and _timeout*2
 	// This is to prevent collisions on every retransmit
 	// if 2 nodes try to transmit at the same time
-	// updated the random delay to be 10*(0 - 25)/25 instead of (0 - 256)/256 in order to eliminate rounding error as we track the re-transmit delays within the message.  
 #if (RH_PLATFORM == RH_PLATFORM_RASPI) // use standard library random(), bugs in random(min, max)
 	uint16_t timeout = _timeout + (_timeout * (random() & 0xFF) / 256);
 #else
-	uint16_t timeout = _timeout + (_timeout * 10 * random(0, 25) / 25);
+	uint16_t timeout = _timeout + (_timeout * random(0, 256) / 256);
 #endif
+
+	//Round the total timeout to the nearest hundredth of a ms. Decreasing resolution allows us to include the total timeout within the message packet but still maintain total accuracy of it upto 2,550 ms (255 *10).  
+	timeout = (timeout/10)*10;
 
 	// If we assume the message is initiated from RFM95 Mesh then buf[5] is the message type. If buf[5] = 0, this is an application message. Let's "hijack" the last two bytes of that message to add the number of re-transmissions 
 	// and the delay with each transmission. This can be used to determine the total transmit time end to end of a message by accounting for re-transmissions in route. 

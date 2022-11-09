@@ -16,7 +16,7 @@
 #define RH_MESH_MESSAGE_TYPE_ROUTE_FAILURE                  3
 
 // Timeout for address resolution in milliecs
-#define RH_MESH_ARP_TIMEOUT 4000
+#define RH_MESH_ARP_TIMEOUT 1500
 
 /////////////////////////////////////////////////////////////////////
 /// \class RHMesh RHMesh.h <RHMesh.h>
